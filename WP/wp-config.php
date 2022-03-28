@@ -80,8 +80,6 @@ $table_prefix = 'wp_';
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
 define( 'WP_DEBUG', false );
-define('WP_HOME', 'http://157.245.49.82' );
-define('WP_SITEURL', 'http://157.245.49.82' );
 
 /* Add any custom values between this line and the "stop editing" line. */
 

@@ -1,0 +1,44 @@
+server {
+        ## Your website name goes here.
+        server_name _;
+        ## Your only path reference.
+        root /var/www/html/wordpress;
+        ## This should be in your http block and if it is, it's not needed here.
+        index index.php;
+
+        location = /favicon.ico {
+                log_not_found off;
+                access_log off;
+        }
+
+        location = /robots.txt {
+                allow all;
+                log_not_found off;
+                access_log off;
+        }
+
+        location / {
+                # This is cool because no php is touched for static content.
+                # include the "?$args" part so non-default permalinks doesn't break when using query string
+try_files $uri $uri/ /index.php?q=$uri&$args;
+        }
+
+        location ~ \.php$ {
+ try_files $uri =404;
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass unix:/run/php/php8.1-fpm.sock;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                include fastcgi_params;
+
+
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                expires max;
+                log_not_found off;
+        }
+access_log /var/log/nginx/WP_http_access.log combined;
+        error_log /var/log/nginx/WP_http_error.log;
+
+}
